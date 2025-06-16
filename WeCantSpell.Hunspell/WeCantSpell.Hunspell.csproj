@@ -27,7 +27,7 @@
     <Authors>aarondandy</Authors>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <PackageReleaseNotes>@(ReleaseNoteLines, '%0a')</PackageReleaseNotes>
+    <PackageReleaseNotes>@(ReleaseNoteLines, '%0a')</PackageReleaseNotes>    
   </PropertyGroup>
 
   <ItemGroup>

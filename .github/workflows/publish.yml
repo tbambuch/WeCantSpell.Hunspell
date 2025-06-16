@@ -12,6 +12,10 @@ env:
 
 jobs:
   publish:
+    permissions:
+      packages: write
+      contents: read
+
     runs-on: windows-2025
 
     steps:
@@ -33,9 +37,16 @@ jobs:
 
       - run: dotnet pack WeCantSpell.Hunspell/WeCantSpell.Hunspell.csproj -c Release --output ./artifacts --include-symbols -p:SymbolPackageFormat=snupkg
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: nuget-packages
-          path: |
-            ./artifacts/WeCantSpell.Hunspell.*.*nupkg
-            ./artifacts/WeCantSpell.Hunspell.*.*snupkg
+      - name: Publish on GitHub
+        env:
+          token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          dotnet nuget push "artifacts\WeCantSpell.Hunspell.${{ github.ref_name }}.nupkg" -s https://nuget.pkg.github.com/emclient/index.json --api-key ${{ secrets.GITHUB_TOKEN }}
+          dotnet nuget push "artifacts\WeCantSpell.Hunspell.${{ github.ref_name }}.snupkg" -s https://nuget.pkg.github.com/emclient/index.json --api-key ${{ secrets.GITHUB_TOKEN }}
+
+      #- uses: actions/upload-artifact@v4
+      #  with:
+      #    name: nuget-packages
+      #    path: |
+      #      ./artifacts/WeCantSpell.Hunspell.*.*nupkg
+      #      ./artifacts/WeCantSpell.Hunspell.*.*snupkg
